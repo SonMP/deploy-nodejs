@@ -179,12 +179,14 @@ let getDetailDoctorByIdService = (inputId) => {
 let bulkCreateSchedule = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
+
             if (!data.arrSchedule || !data.doctorId || !data.formatDate) {
                 resolve({
                     errCode: 1,
                     errMessage: 'Missing parameter!'
                 })
             } else {
+
                 let schedule = data.arrSchedule;
                 if (schedule && schedule.length > 0) {
                     schedule.map(item => {
@@ -192,12 +194,14 @@ let bulkCreateSchedule = (data) => {
                         return item;
                     })
                 }
+
                 //get all existing date
                 let existing = await db.Schedule.findAll({
                     where: { doctorId: data.doctorId, date: data.formatDate },
                     attributes: ['timeType', 'date', 'maxNumber', 'doctorId'],
                     raw: true
                 })
+
                 //convert date
                 // if (existing && existing.length > 0) {
                 //     existing.map(item => {
