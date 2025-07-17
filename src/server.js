@@ -10,24 +10,33 @@ let app = express();
 // app.use(cors({ credentials: true, origin: true }));
 
 // Add headers before the routes are defined
-app.use(function (req, res, next) {
+app.use(cors({
+    origin: process.env.URL_REACT, // Cho phép nguồn từ URL_REACT
+    methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'PATCH', 'DELETE'], // Phương thức được phép
+    allowedHeaders: ['X-Requested-With', 'Content-Type'], // Header được phép
+    credentials: true // Cho phép cookie và thông tin xác thực
+}));
+app.options('*', cors()); // Cho phép tất cả các OPTIONS request
 
-    // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', process.env.URL_REACT);
 
-    // Request methods you wish to allow
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+// app.use(function (req, res, next) {
 
-    // Request headers you wish to allow
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+//     // Website you wish to allow to connect
+//     res.setHeader('Access-Control-Allow-Origin', process.env.URL_REACT);
 
-    // Set to true if you need the website to include cookies in the requests sent
-    // to the API (e.g. in case you use sessions)
-    res.setHeader('Access-Control-Allow-Credentials', true);
+//     // Request methods you wish to allow
+//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
-    // Pass to next layer of middleware
-    next();
-});
+//     // Request headers you wish to allow
+//     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+//     // Set to true if you need the website to include cookies in the requests sent
+//     // to the API (e.g. in case you use sessions)
+//     res.setHeader('Access-Control-Allow-Credentials', true);
+
+//     // Pass to next layer of middleware
+//     next();
+// });
 
 //config app
 

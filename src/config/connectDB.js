@@ -18,7 +18,8 @@ const sequelize = new Sequelize(
                     ssl: {
                         require: true,
                         rejectUnauthorized: false
-                    }
+                    },
+                    family: 4,
                 } : {}
         ,
         query: {

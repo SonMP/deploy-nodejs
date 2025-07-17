@@ -62,6 +62,16 @@ let postInforDoctorService = (data) => {
             } else {
                 //upsert markdown
                 if (data.action == 'CREATE') {
+                    let existingMarkdown = await db.Markdown.findOne({
+                        where: { doctorId: data.doctorId }
+                    });
+
+                    if (existingMarkdown) {
+                        return resolve({
+                            errCode: 2,
+                            errMessage: 'Markdown already exists for this doctor.'
+                        });
+                    }
                     await db.Markdown.create({
                         contentHTML: data.contentHTML,
                         contentMarkdown: data.contentMarkdown,
@@ -120,7 +130,14 @@ let postInforDoctorService = (data) => {
                 })
             }
         } catch (e) {
-            reject(e)
+            if (e.name === 'SequelizeUniqueConstraintError') {
+                reject({
+                    errCode: 2,
+                    errMessage: 'Duplicate key value error: ' + e.errors[0].message
+                });
+            } else {
+                reject(e);
+            }
         }
     })
 }
